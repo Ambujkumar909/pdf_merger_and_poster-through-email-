@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<title>Processing Result</title>
+<h1>Processing Result</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%}
+<ul class="flashes">
+  {% for category, message in messages %}
+  <li style="color: green; list-style-type: none">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endwith %} {% if operation == 'process_order' %}
+<h2>Order Processing Status</h2>
+{% if email_sent %}
+<p>✅ **Success!** The merged document has been emailed to the recipient.</p>
+{% else %}
+<p>
+  ⚠️ **Warning!** The documents were merged successfully, but the email failed
+  to send (check configuration/credentials).
+</p>
+<p>You can manually download the consolidated document here:</p>
+<p>
+  <a href="{{ url_for('download_file', filename=output_file) }}"
+    >{{ output_file }}</a
+  >
+</p>
+{% endif %} {% else %}
+<p>Operation status unknown or failed.</p>
+{% endif %}
+
+<hr />
+<p><a href="{{ url_for('index') }}">Start a New Process</a></p>
